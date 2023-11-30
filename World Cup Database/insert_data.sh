@@ -9,8 +9,15 @@ fi
 
 # Do not change code above this line. Use the PSQL variable above to query your database.
 
+#clear the terminal
+clear
+
 #Remove all the data
-echo $($PSQL "TRUNCATE game")
+echo $($PSQL "TRUNCATE games, teams")
+
+#Reset Sequence table for SERIAL games_id and team_id
+echo $($PSQL "ALTER SEQUENCE teams_team_id_seq RESTART WITH 1")
+echo $($PSQL "ALTER SEQUENCE games_game_id_seq RESTART WITH 1")
 
 #IFS command gets the commas from csv
 #
@@ -19,7 +26,7 @@ echo $($PSQL "TRUNCATE game")
 #
 cat games.csv | while IFS="," read YR RND WIN OPP WINGOAL OPPGOAL
 do
-  if [[ $WIN != "winner"]]
+  if [[ $WIN != "winner" ]]
   then
     #$WIN is winners team name
     # get winner_id
@@ -35,12 +42,12 @@ do
     if [[ -z $WIN_ID ]]
     then
       #Add Team...
-      INSERT_WIN_RESULT = $($PSQL "INSERT INTO teams(name) VALUES('$WIN')'")
+      INSERT_WIN_RESULT=$($PSQL "INSERT INTO teams(name) VALUES('$WIN')")
 
       #Confirm back from terminal
-      if [[ INSERT_WIN_RESULT == "INSERT 0 1" ]]
+      if [[ $INSERT_WIN_RESULT == "INSERT 0 1" ]]
        then
-        echo Team Added, $WIN
+        echo Team Added: $WIN
 
         #Doing this in here because i want to know it was done.
         #dont really have error handling soooooooo this is the attempt
@@ -64,12 +71,12 @@ do
     if [[ -z $OPP_ID ]]
     then
       #Add Team...
-      INSERT_OPP_RESULT = $($PSQL "INSERT INTO teams(name) VALUES('$OPP')'")
+      INSERT_OPP_RESULT=$($PSQL "INSERT INTO teams(name) VALUES('$OPP')")
 
       #Confirm back from terminal
-      if [[ INSERT_OPP_RESULT == "INSERT 0 1" ]]
+      if [[ $INSERT_OPP_RESULT == "INSERT 0 1" ]]
        then
-        echo Team Added, $OPP
+        echo Team Added: $OPP
 
         #Doing this in here because i want to know it was done.
         #dont really have error handling soooooooo this is the attempt
@@ -82,13 +89,13 @@ do
     #Should have all the data for games DB
     #Insert into games DB
     # YR RND WIN WIN_ID OPP OPP_ID WINGOAL OPPGOAL
-    INSERT_GAMES=$($PSQL "INSERT INTO games(year,round,winner_id,opponent_id,winner_goals,opponent_goals) VALUES($YR, $RND, $WIN_ID, $OPP_ID, $WINGOAL, $OPPGOAL)")
-    
+    INSERT_GAMES=$($PSQL "INSERT INTO games(year,round,winner_id,opponent_id,winner_goals,opponent_goals) VALUES('$YR', '$RND', '$WIN_ID', '$OPP_ID', '$WINGOAL', '$OPPGOAL')")
+
     #Dont need this but
     #Prompt out what we added
     if [[ $INSERT_GAMES == "INSERT 0 1" ]]
     then
-      echo Inserted match info, $YR, $RND, $WIN_ID, $OPP_ID, $WINGOAL, $OPPGOAL
+      echo Inserted match info: $YR - $RND - $WIN_ID - $OPP_ID - $WINGOAL - $OPPGOAL
     fi
   fi
 done
