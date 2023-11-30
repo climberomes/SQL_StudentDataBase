@@ -16,10 +16,10 @@ Task4.1: For Games Add a year column of type INT, and a round column of type VAR
   ALTER TABLE games ADD COLUMN round VARCHAR(50) NOT NULL;
 
 Task5: Your games table should have winner_id and opponent_id foreign key columns that each reference team_id from the teams table.
+  ALTER TABLE games ADD COLUMN winner_id INT NOT NULL;
   ALTER TABLE games ADD FOREIGN KEY(winner_id) REFERENCES teams(team_id);
-  ALTER TABLE games ALTER COLUMN winner_id SET NOT NULL;
+  ALTER TABLE games ADD COLUMN opponent_id INT NOT NULL;
   ALTER TABLE games ADD FOREIGN KEY(opponent_id) REFERENCES teams(team_id);
-  ALTER TABLE games ALTER COLUMN opponent_id SET NOT NULL;
 
 Task6: Your games table should have winner_goals and opponent_goals columns that are type INT
   ALTER TABLE games ADD COLUMN winner_goals INT NOT NULL;
@@ -33,10 +33,10 @@ Task8: Your two script (.sh) files should have executable permissions. Other tes
     chmod +x file_name.sh
 
 Task9: When you run your insert_data.sh script, it should add each unique team to the teams table. There should be 24 rows
-
+  See file
 
 Task10: When you run your insert_data.sh script, it should insert a row for each line in the games.csv file (other than the top line of the file). There should be 32 rows. Each row should have every column filled in with the appropriate info. Make sure to add the correct ID's from the teams table (you cannot hard-code the values)
-
+  See file (makes sense once you think about it)
 
 Task11: You should correctly complete the queries in the queries.sh file. Fill in each empty echo command to get the output of what is suggested with the command above it. Only use a single line like the first query. The output should match what is in the expected_output.txt file exactly, take note of the number of decimal places in some of the query results
-
+  
