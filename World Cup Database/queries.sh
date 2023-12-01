@@ -26,16 +26,17 @@ echo -e "\nNumber of games where the winning team scored more than two goals:"
 echo "$($PSQL "SELECT count(winner_goals) FROM games WHERE winner_goals>2")"
 
 echo -e "\nWinner of the 2018 tournament team name:"
-echo 
+echo "$($PSQL "SELECT name FROM games LEFT JOIN teams ON games.winner_id = teams.team_id WHERE round LIKE 'Final' AND year = 2018")"
 
 echo -e "\nList of teams who played in the 2014 'Eighth-Final' round:"
-echo
+echo "$($PSQL "SELECT * FROM ")"
+#SELECT winTeam.name AS X,oppTeam.name AS X FROM games LEFT JOIN teams winTeam ON games.winner_id = winTeam.team_id LEFT JOIN teams oppTeam ON games.opponent_id = oppTeam.team_id;
 
 echo -e "\nList of unique winning team names in the whole data set:"
-echo 
+echo "$($PSQL " SELECT DISTINCT(name) FROM games LEFT JOIN teams ON games.winner_id = teams.team_id")"
 
 echo -e "\nYear and team name of all the champions:"
-echo
+echo "$($PSQL "SELECT year,name FROM games LEFT JOIN teams ON games.winner_id = teams.team_id WHERE round LIKE 'Final' ORDER BY year")"
 
 echo -e "\nList of teams that start with 'Co':"
 echo "$($PSQL "SELECT name FROM teams WHERE name LIKE 'Co%'")"
