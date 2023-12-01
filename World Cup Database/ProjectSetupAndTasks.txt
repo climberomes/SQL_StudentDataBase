@@ -1,3 +1,5 @@
+pg_dump -cC --inserts -U freecodecamp worldcup > worldcup.sql
+
 Task1: You should create a database named worldcup
   CREATE DATABASE worldcup;
 
